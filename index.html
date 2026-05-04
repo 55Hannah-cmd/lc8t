@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super8 × LINE 連携プロジェクト — 認識合わせ資料</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green:#0f9e75;--green-light:#e1f5ee;--green-dark:#085041;
+    --purple:#534ab7;--purple-light:#eeedfe;
+    --coral:#d85a30;--coral-light:#faece7;
+    --amber:#ba7517;--amber-light:#faeeda;
+    --gray-50:#f7f6f3;--gray-100:#ebebeb;--gray-300:#c4c3bb;
+    --gray-500:#7a7970;--gray-700:#3d3d3a;--gray-900:#1a1a18;
+    --bg:#fafaf8;--white:#ffffff;--radius:10px;--radius-lg:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans JP','Noto Sans TC',sans-serif;background:var(--bg);color:var(--gray-900);font-size:14px;line-height:1.7;}
+  body.lang-zh{font-family:'Noto Sans TC','Noto Sans JP',sans-serif;}
+
+  /* ── lang switching ── */
+  .ja{display:block;} .zh{display:none;}
+  body.lang-zh .ja{display:none;} body.lang-zh .zh{display:block;}
+  span.ja{display:inline;} span.zh{display:none;}
+  body.lang-zh span.ja{display:none;} body.lang-zh span.zh{display:inline;}
+
+  /* ── lang switcher ── */
+  .lang-switcher{position:fixed;top:14px;right:20px;z-index:200;display:flex;gap:4px;background:var(--gray-900);border-radius:6px;padding:3px;}
+  .lang-btn{padding:4px 12px;font-size:11px;font-family:'DM Mono',monospace;font-weight:500;border:none;border-radius:4px;cursor:pointer;background:transparent;color:var(--gray-300);transition:all .15s;}
+  .lang-btn.active{background:var(--white);color:var(--gray-900);}
+
+  /* ── header ── */
+  .header{background:var(--gray-900);color:var(--white);padding:48px 60px 40px;position:relative;overflow:hidden;}
+  .header::before{content:'';position:absolute;top:-60px;right:-40px;width:300px;height:300px;border-radius:50%;background:var(--green);opacity:.08;}
+  .header-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--green);border:1px solid var(--green);padding:3px 10px;border-radius:4px;margin-bottom:16px;text-transform:uppercase;}
+  .header h1{font-size:28px;font-weight:700;line-height:1.3;margin-bottom:10px;}
+  .header-sub{color:var(--gray-300);font-size:13px;font-weight:300;}
+  .header-meta{margin-top:24px;display:flex;gap:24px;flex-wrap:wrap;}
+  .meta-item{font-size:12px;color:var(--gray-300);font-family:'DM Mono',monospace;}
+  .meta-item span{color:var(--white);font-weight:500;}
+
+  /* ── nav ── */
+  .nav{background:var(--white);border-bottom:1px solid var(--gray-100);padding:0 60px;display:flex;gap:0;position:sticky;top:0;z-index:100;overflow-x:auto;}
+  .nav a{display:block;padding:14px 18px;font-size:12px;font-weight:500;color:var(--gray-500);text-decoration:none;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
+  .nav a:hover,.nav a.active{color:var(--green-dark);border-bottom-color:var(--green);}
+
+  /* ── main ── */
+  .main{max-width:960px;margin:0 auto;padding:48px 60px 80px;}
+  section{margin-bottom:56px;scroll-margin-top:60px;}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--gray-100);}
+  .section-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--gray-500);background:var(--gray-100);padding:2px 8px;border-radius:4px;flex-shrink:0;}
+  .section-header h2{font-size:18px;font-weight:700;color:var(--gray-900);}
+
+  /* ── goal card ── */
+  .goal-card{background:var(--green-light);border:1px solid #9fe1cb;border-left:4px solid var(--green);border-radius:var(--radius);padding:24px 28px;margin-bottom:16px;}
+  .goal-card .goal-title{font-size:15px;font-weight:700;color:var(--green-dark);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .goal-card p{font-size:13px;color:#085041;line-height:1.7;}
+
+  /* ── two-col ── */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+  /* ── prereq card ── */
+  .prereq-card{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius);padding:20px 22px;}
+  .prereq-card .pc-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .pc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+  .pc-icon.green{background:var(--green-light);} .pc-icon.purple{background:var(--purple-light);} .pc-icon.amber{background:var(--amber-light);} .pc-icon.coral{background:var(--coral-light);}
+  .prereq-card h3{font-size:13px;font-weight:700;color:var(--gray-900);}
+  .prereq-card .pc-status{display:inline-block;font-size:10px;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:3px;margin-top:2px;}
+  .status-ok{background:var(--green-light);color:var(--green-dark);}
+  .status-check{background:var(--amber-light);color:#633806;}
+  .status-impl{background:var(--coral-light);color:#4a1b0c;}
+  .prereq-card ul{list-style:none;padding:0;}
+  .prereq-card ul li{font-size:12px;color:var(--gray-700);padding:4px 0;border-bottom:1px solid var(--gray-100);display:flex;align-items:flex-start;gap:6px;}
+  .prereq-card ul li:last-child{border-bottom:none;}
+  .li-dot{width:5px;height:5px;border-radius:50%;margin-top:7px;flex-shrink:0;}
+  .dot-green{background:var(--green);} .dot-amber{background:var(--amber);} .dot-coral{background:var(--coral);}
+
+  /* ── swimlane ── */
+  .swimlane-wrap{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:16px;}
+  .swimlane-header{display:grid;grid-template-columns:100px 1fr 1fr 1fr 1fr 1fr;background:var(--gray-900);color:var(--white);}
+  .swimlane-header div{padding:10px 14px;font-size:11px;font-family:'DM Mono',monospace;font-weight:500;border-right:1px solid rgba(255,255,255,.08);}
+  .swimlane-row{display:grid;grid-template-columns:100px 1fr 1fr 1fr 1fr 1fr;border-bottom:1px solid var(--gray-100);min-height:80px;position:relative;}
+  .swimlane-row:last-child{border-bottom:none;}
+  .swimlane-step-label{background:var(--gray-50);border-right:1px solid var(--gray-100);padding:12px 14px;display:flex;flex-direction:column;justify-content:center;}
+  .swimlane-step-label .sn{font-family:'DM Mono',monospace;font-size:10px;color:var(--gray-500);}
+  .swimlane-step-label .st{font-size:11px;font-weight:700;color:var(--gray-900);line-height:1.3;margin-top:2px;}
+  .swimlane-cell{padding:12px 14px;border-right:1px solid var(--gray-100);font-size:11px;color:var(--gray-700);display:flex;flex-direction:column;justify-content:center;gap:4px;position:relative;}
+  .swimlane-cell:last-child{border-right:none;}
+  .cell-action{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;line-height:1.4;}
+  .cell-action.teal{background:var(--green-light);color:var(--green-dark);}
+  .cell-action.purple{background:var(--purple-light);color:#26215c;}
+  .cell-action.coral{background:var(--coral-light);color:#4a1b0c;}
+  .cell-action.gray{background:var(--gray-100);color:var(--gray-700);}
+  .cell-action.blue{background:#e6f1fb;color:#0c447c;}
+  .cell-note{font-size:10px;color:var(--gray-500);}
+  /* 横矢印：セル右端に表示 */
+  .cell-arrow-right::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--gray-300);z-index:10;pointer-events:none;}
+  /* 縦矢印ライン：ステップ間 */
+  .row-divider-arrow{position:relative;height:0;}
+  .row-divider-arrow::before{content:'';display:block;}
+  /* 斜め矢印ラベル */
+  .arrow-label{font-size:9px;color:var(--gray-500);font-family:'DM Mono',monospace;text-align:center;margin-top:2px;}
+  /* SVGフローオーバーレイ */
+  .flow-svg-wrap{position:relative;overflow-x:auto;}
+  .flow-svg-wrap svg{display:block;min-width:700px;}
+
+  /* ── flow diagram ── */
+  .flow-wrap{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:32px;overflow-x:auto;}
+  .flow-diagram{display:flex;align-items:flex-start;gap:0;min-width:700px;}
+  .flow-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;}
+  .flow-step:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:22px;font-size:18px;color:var(--gray-300);z-index:2;}
+  .flow-num{width:24px;height:24px;border-radius:50%;background:var(--gray-900);color:var(--white);font-size:10px;font-family:'DM Mono',monospace;font-weight:500;display:flex;align-items:center;justify-content:center;margin-bottom:8px;flex-shrink:0;}
+  .flow-box{width:100%;max-width:130px;border-radius:var(--radius);padding:12px 10px;text-align:center;border:1px solid;}
+  .flow-box.teal{background:var(--green-light);border-color:#5dcaa5;color:var(--green-dark);}
+  .flow-box.purple{background:var(--purple-light);border-color:#afa9ec;color:#26215c;}
+  .flow-box.coral{background:var(--coral-light);border-color:#f0997b;color:#4a1b0c;}
+  .flow-box .fb-label{font-size:10px;font-family:'DM Mono',monospace;opacity:.6;margin-bottom:4px;}
+  .flow-box .fb-title{font-size:12px;font-weight:700;line-height:1.3;margin-bottom:4px;}
+  .flow-box .fb-sub{font-size:10px;opacity:.75;line-height:1.4;}
+  .flow-impl{margin-top:8px;font-size:10px;color:var(--coral);font-weight:500;background:var(--coral-light);border:1px solid #f0997b;border-radius:4px;padding:2px 6px;}
+  .flow-legend{display:flex;gap:20px;margin-top:20px;flex-wrap:wrap;}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray-500);}
+  .legend-dot{width:10px;height:10px;border-radius:2px;}
+
+  /* ── change table ── */
+  .change-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--gray-100);}
+  .change-table thead tr{background:var(--gray-900);color:var(--white);}
+  .change-table thead th{padding:12px 16px;font-size:11px;font-weight:500;font-family:'DM Mono',monospace;text-align:left;letter-spacing:.06em;}
+  .change-table tbody tr{border-bottom:1px solid var(--gray-100);transition:background .15s;}
+  .change-table tbody tr:hover{background:var(--gray-50);}
+  .change-table tbody td{padding:14px 16px;font-size:12px;color:var(--gray-700);vertical-align:top;}
+  .change-table tbody td:first-child{font-weight:700;color:var(--gray-900);white-space:nowrap;}
+  .badge{display:inline-block;font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:3px;white-space:nowrap;}
+  .badge-ok{background:var(--green-light);color:var(--green-dark);}
+  .badge-req{background:var(--coral-light);color:#4a1b0c;}
+  .badge-chk{background:var(--amber-light);color:#633806;}
+
+  /* ── q list ── */
+  .q-list{display:flex;flex-direction:column;gap:12px;}
+  .q-item{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius);padding:18px 20px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;}
+  .q-num{width:28px;height:28px;border-radius:50%;background:var(--purple-light);color:var(--purple);font-family:'DM Mono',monospace;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .q-content h4{font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:6px;}
+  .q-content p{font-size:12px;color:var(--gray-500);line-height:1.6;}
+  .q-text{margin-top:10px;background:var(--gray-50);border:1px solid var(--gray-100);border-left:3px solid var(--purple);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--gray-700);font-style:italic;line-height:1.6;}
+
+  /* ── steps ── */
+  .steps-list{display:flex;flex-direction:column;gap:0;}
+  .step-item{display:grid;grid-template-columns:60px 1fr;gap:0;position:relative;}
+  .step-item:not(:last-child) .step-line{position:absolute;left:29px;top:44px;bottom:0;width:2px;background:var(--gray-100);}
+  .step-left{display:flex;flex-direction:column;align-items:center;padding-top:10px;position:relative;}
+  .step-circle{width:20px;height:20px;border-radius:50%;background:var(--gray-900);color:var(--white);font-size:10px;font-family:'DM Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;}
+  .step-right{padding:8px 0 28px;}
+  .step-right h4{font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:4px;}
+  .step-right p{font-size:12px;color:var(--gray-500);line-height:1.6;}
+  .step-tag{display:inline-block;font-size:10px;font-family:'DM Mono',monospace;color:var(--gray-500);background:var(--gray-100);padding:1px 6px;border-radius:3px;margin-bottom:6px;}
+
+  /* ── footer ── */
+  .footer{background:var(--gray-900);color:var(--gray-500);text-align:center;padding:24px;font-size:11px;font-family:'DM Mono',monospace;}
+
+  /* ── pattern cards ── */
+  .pattern-grid{display:flex;flex-direction:column;gap:16px;}
+  .pattern-card{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--gray-100);}
+  .pattern-head{display:flex;align-items:center;gap:12px;padding:16px 20px;}
+  .pattern-badge{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap;}
+  .pattern-badge.a{background:#e1f5ee;color:#085041;}
+  .pattern-badge.b{background:#faeeda;color:#633806;}
+  .pattern-badge.c{background:#faece7;color:#4a1b0c;}
+  .pattern-title{font-size:14px;font-weight:700;color:var(--gray-900);}
+  .pattern-body{padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .pattern-col h5{font-size:11px;font-family:'DM Mono',monospace;color:var(--gray-500);margin-bottom:8px;letter-spacing:.04em;}
+  .pattern-col ul{list-style:none;padding:0;}
+  .pattern-col ul li{font-size:12px;color:var(--gray-700);padding:3px 0;border-bottom:1px solid var(--gray-100);display:flex;align-items:flex-start;gap:6px;line-height:1.5;}
+  .pattern-col ul li:last-child{border-bottom:none;}
+  .pattern-card.a .pattern-head{background:#e1f5ee;}
+  .pattern-card.b .pattern-head{background:#faeeda;}
+  .pattern-card.c .pattern-head{background:#faece7;}
+
+  @media(max-width:700px){
+    .main{padding:24px 20px 60px;} .header{padding:32px 20px 28px;} .nav{padding:0 20px;}
+    .two-col{grid-template-columns:1fr;}
+    .swimlane-header,.swimlane-row{grid-template-columns:80px repeat(5,1fr);font-size:10px;}
+    .change-table{font-size:11px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-switcher">
+  <button class="lang-btn active" onclick="setLang('ja')">JA</button>
+  <button class="lang-btn" onclick="setLang('zh')">繁中</button>
+</div>
+
+<div class="header">
+  <div class="header-tag">Project Briefing</div>
+  <h1>
+    <span class="ja">Super8 × LINE 顧客行動データ連携<br>認識合わせ資料</span>
+    <span class="zh">Super8 × LINE 顧客行為資料串接<br>專案共識確認文件</span>
+  </h1>
+  <p class="header-sub">
+    <span class="ja">LINEから商品詳細ページへの遷移行動をSuper8 CRMにタグとして蓄積するプロジェクト</span>
+    <span class="zh">將 LINE 導流至商品頁的顧客行為，以標籤形式儲存至 Super8 CRM 的專案</span>
+  </p>
+  <div class="header-meta">
+    <div class="meta-item"><span class="ja">対象システム</span><span class="zh">目標系統</span> <span>Super8 / SHOPLINE / LINE</span></div>
+    <div class="meta-item"><span class="ja">ステータス</span><span class="zh">狀態</span> <span><span class="ja">要件定義フェーズ</span><span class="zh">需求定義階段</span></span></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <a href="#goal" class="active"><span class="ja">① やりたいこと</span><span class="zh">① 目標</span></a>
+  <a href="#flow"><span class="ja">② 全体フロー</span><span class="zh">② 整體流程</span></a>
+  <a href="#prereq"><span class="ja">③ 前提条件</span><span class="zh">③ 前提條件</span></a>
+  <a href="#changes"><span class="ja">④ 必要な変更</span><span class="zh">④ 所需變更</span></a>
+  <a href="#questions"><span class="ja">⑤ Super8への質問</span><span class="zh">⑤ Super8 詢問事項</span></a>
+  <a href="#patterns"><span class="ja">⑥ Super8回答別対応</span><span class="zh">⑥ Super8 回應對策</span></a>
+  <a href="#nextsteps"><span class="ja">⑦ 次のステップ</span><span class="zh">⑦ 後續步驟</span></a>
+</nav>
+
+<main class="main">
+
+  <!-- 01 -->
+  <section id="goal">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2><span class="ja">やりたいこと — プロジェクトゴール</span><span class="zh">目標 — 專案目的</span></h2>
+    </div>
+    <div class="goal-card">
+      <div class="goal-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#0f9e75" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#0f9e75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="ja">最終目標</span><span class="zh">最終目標</span>
+      </div>
+      <p>
+        <span class="ja">LINEで商品紹介を受けた顧客が、ランディングページ上でどの商品に興味を持ち詳細を見たかという<strong>行動データ（商品クリック）を、LINE IDと紐付けてSuper8 CRMにタグとして蓄積</strong>する。それを元に個人化された次のアクション（フォローアップ配信など）につなげる。</span>
+        <span class="zh">讓透過 LINE 收到商品介紹的顧客，在到達頁上點擊感興趣商品的<strong>行為資料（商品點擊），與 LINE ID 綁定並以標籤形式儲存至 Super8 CRM</strong>。以此為基礎，進行個人化的後續行動（如追蹤發送訊息）。</span>
+      </p>
+    </div>
+    <div class="two-col">
+      <div class="prereq-card">
+        <div class="pc-head"><div class="pc-icon green">📊</div>
+          <div><h3><span class="ja">現状できていること</span><span class="zh">目前已具備的條件</span></h3>
+          <span class="pc-status status-ok"><span class="ja">現状</span><span class="zh">現狀</span></span></div>
+        </div>
+        <ul>
+          <li><span class="li-dot dot-green"></span><span class="ja">LINE公式アカウントでの商品紹介配信</span><span class="zh">透過 LINE 官方帳號進行商品介紹推播</span></li>
+          <li><span class="li-dot dot-green"></span><span class="ja">Super8での1:1会話・CRM管理</span><span class="zh">Super8 的 1:1 對話與 CRM 管理</span></li>
+          <li><span class="li-dot dot-green"></span><span class="ja">store.benesse.com.tw（SHOPLINEサイト）の運用</span><span class="zh">store.benesse.com.tw（SHOPLINE 網站）的運營</span></li>
+          <li><span class="li-dot dot-green"></span><span class="ja">SHOPLINEとSuper8の公式連携（購入結果データ）</span><span class="zh">SHOPLINE 與 Super8 官方串接（購買結果資料）</span></li>
+          <li><span class="li-dot dot-green"></span><span class="ja">LINEタグ・Facebook Pixelの導入済み</span><span class="zh">已導入 LINE Tag 與 Facebook Pixel</span></li>
+        </ul>
+      </div>
+      <div class="prereq-card">
+        <div class="pc-head"><div class="pc-icon coral">🎯</div>
+          <div><h3><span class="ja">今回新たに実現したいこと</span><span class="zh">本次新增目標</span></h3>
+          <span class="pc-status status-impl"><span class="ja">新規実装</span><span class="zh">新增實作</span></span></div>
+        </div>
+        <ul>
+          <li><span class="li-dot dot-coral"></span><span class="ja">LINE ID ↔ SHOPLINE会員IDの明示的な紐付け</span><span class="zh">LINE ID ↔ SHOPLINE 會員 ID 的明確綁定</span></li>
+          <li><span class="li-dot dot-coral"></span><span class="ja">商品詳細ページへの遷移をトリガーとしたタグ付与</span><span class="zh">以跳轉至商品詳細頁為觸發條件的標籤賦予</span></li>
+          <li><span class="li-dot dot-coral"></span><span class="ja">Super8 CRM上での行動タグの蓄積・確認</span><span class="zh">在 Super8 CRM 累積並確認行為標籤</span></li>
+          <li><span class="li-dot dot-coral"></span><span class="ja">タグを使ったセグメント配信（興味商品に応じた個別アプローチ）</span><span class="zh">利用標籤進行分眾推播（依感興趣商品個別追蹤）</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section id="flow">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2><span class="ja">全体フロー — アクター別の動き</span><span class="zh">整體流程 — 各角色的行動</span></h2>
+    </div>
+
+    <div class="swimlane-wrap">
+      <div class="swimlane-header">
+        <div><span class="ja">ステップ</span><span class="zh">步驟</span></div>
+        <div>👤 <span class="ja">顧客</span><span class="zh">顧客</span></div>
+        <div>💬 LINE</div>
+        <div>🛒 <span class="ja">SHOPLINEサイト</span><span class="zh">SHOPLINE 網站</span></div>
+        <div>📊 GTM / GA4</div>
+        <div>🗂 Super8 CRM</div>
+      </div>
+      <!-- Step 1 -->
+      <div class="swimlane-row">
+        <div class="swimlane-step-label"><span class="sn">①</span><span class="st"><span class="ja">LINE商品紹介</span><span class="zh">LINE 商品介紹</span></span></div>
+        <div class="swimlane-cell"><span class="cell-action gray"><span class="ja">メッセージ受信</span><span class="zh">接收訊息</span></span><span class="cell-note"><span class="ja">商品画像・説明を確認</span><span class="zh">確認商品圖片與說明</span></span></div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action teal"><span class="ja">商品紹介配信</span><span class="zh">推播商品介紹</span></span><span class="cell-note"><span class="ja">画像＋LPへのリンク付き</span><span class="zh">含圖片與 LP 連結</span></span></div>
+        <div class="swimlane-cell">—</div><div class="swimlane-cell">—</div><div class="swimlane-cell">—</div>
+      </div>
+      <!-- Step 2 -->
+      <div class="swimlane-row">
+        <div class="swimlane-step-label"><span class="sn">②</span><span class="st"><span class="ja">LP到着・ID紐付け</span><span class="zh">到達 LP・綁定 ID</span></span></div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action gray"><span class="ja">LPに到着</span><span class="zh">到達 LP</span></span><span class="cell-note"><span class="ja">会員ログインで認証</span><span class="zh">以會員登入驗證</span></span></div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action teal"><span class="ja">URL遷移</span><span class="zh">URL 跳轉</span></span><span class="cell-note"><span class="ja">LINEからLPへ</span><span class="zh">從 LINE 到 LP</span></span></div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action teal"><span class="ja">商品紹介LP表示</span><span class="zh">顯示商品介紹 LP</span></span><span class="cell-note"><span class="ja">複数商品を一覧表示</span><span class="zh">列出多件商品</span></span></div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action blue"><span class="ja">ページビュー計測</span><span class="zh">頁面瀏覽計測</span></span><span class="cell-note">GA4：utm_source=line<br><span class="ja">流入を記録</span><span class="zh">記錄流入來源</span></span></div>
+        <div class="swimlane-cell"><span class="cell-action purple"><span class="ja">LINE ID紐付け</span><span class="zh">LINE ID 綁定</span></span><span class="cell-note"><span class="ja">会員IDと対応付けて保存</span><span class="zh">與會員 ID 對應儲存</span></span></div>
+      </div>
+      <!-- Step 3 -->
+      <div class="swimlane-row">
+        <div class="swimlane-step-label"><span class="sn">③</span><span class="st"><span class="ja">商品クリック</span><span class="zh">點擊商品</span></span></div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action gray"><span class="ja">詳細ボタンを押す</span><span class="zh">點擊詳細按鈕</span></span><span class="cell-note"><span class="ja">興味のある商品を選択</span><span class="zh">選擇感興趣的商品</span></span></div>
+        <div class="swimlane-cell">—</div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action coral"><span class="ja">クリックイベント発火</span><span class="zh">觸發點擊事件</span></span><span class="cell-note"><span class="ja">data属性から商品ID取得</span><span class="zh">從 data 屬性取得商品 ID</span></span></div>
+        <div class="swimlane-cell"><span class="cell-action blue"><span class="ja">GTMトリガー起動</span><span class="zh">GTM 觸發器啟動</span></span><span class="cell-note">GA4：select_item<br><span class="ja">集計分析のみ</span><span class="zh">僅集計分析用</span></span></div>
+        <div class="swimlane-cell">—</div>
+      </div>
+      <!-- Step 4 -->
+      <div class="swimlane-row">
+        <div class="swimlane-step-label"><span class="sn">④</span><span class="st"><span class="ja">詳細ページ遷移＋タグ送信</span><span class="zh">跳轉詳細頁＋傳送標籤</span></span></div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action gray"><span class="ja">商品詳細ページ閲覧</span><span class="zh">瀏覽商品詳細頁</span></span></div>
+        <div class="swimlane-cell">—</div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action coral"><span class="ja">ページ遷移を検知</span><span class="zh">偵測頁面跳轉</span></span><span class="cell-note"><span class="ja">商品詳細URLへの遷移</span><span class="zh">跳轉至商品詳細 URL</span></span></div>
+        <div class="swimlane-cell cell-arrow-right"><span class="cell-action blue">GTM<span class="ja">：カスタムタグ実行</span><span class="zh">：執行自訂標籤</span></span><span class="cell-note">① GA4：view_item<br>② Super8 API<span class="ja">呼び出し</span><span class="zh">呼叫</span></span></div>
+        <div class="swimlane-cell"><span class="cell-action purple"><span class="ja">行動タグを記録</span><span class="zh">記錄行為標籤</span></span><span class="cell-note"><span class="ja">「商品A_閲覧済み」を付与</span><span class="zh">賦予「商品A_已瀏覽」</span></span></div>
+      </div>
+      <!-- Step 5 -->
+      <div class="swimlane-row">
+        <div class="swimlane-step-label"><span class="sn">⑤</span><span class="st"><span class="ja">データ確認</span><span class="zh">資料確認</span></span></div>
+        <div class="swimlane-cell">—</div><div class="swimlane-cell">—</div><div class="swimlane-cell">—</div>
+        <div class="swimlane-cell"><span class="cell-action blue"><span class="ja">GA4レポート</span><span class="zh">GA4 報表</span></span><span class="cell-note"><span class="ja">集計ベース・個人特定なし</span><span class="zh">集計基礎・無個人識別</span></span></div>
+        <div class="swimlane-cell"><span class="cell-action purple">CRM<span class="ja">タグ確認</span><span class="zh">標籤確認</span></span><span class="cell-note"><span class="ja">LINE IDごとの行動一覧</span><span class="zh">依 LINE ID 的行為清單</span></span></div>
+      </div>
+    </div>
+
+    <!-- SVG flow diagram -->
+    <div class="flow-wrap">
+      <div style="font-size:11px;color:var(--gray-500);font-family:'DM Mono',monospace;margin-bottom:20px;">DATA FLOW — <span class="ja">連携の流れと矢印</span><span class="zh">串接流程與箭頭</span></div>
+      <div class="flow-svg-wrap">
+        <svg viewBox="0 0 860 260" xmlns="http://www.w3.org/2000/svg" style="min-width:760px;width:100%;max-height:300px;">
+          <defs>
+            <marker id="arrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#0f9e75" stroke-width="1.5" stroke-linecap="round"/></marker>
+            <marker id="arrowP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#534ab7" stroke-width="1.5" stroke-linecap="round"/></marker>
+            <marker id="arrowO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#d85a30" stroke-width="1.5" stroke-linecap="round"/></marker>
+            <marker id="arrowB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#185fa5" stroke-width="1.5" stroke-linecap="round"/></marker>
+            <marker id="arrowGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#c4c3bb" stroke-width="1.5" stroke-linecap="round"/></marker>
+          </defs>
+
+          <!-- ① LINE -->
+          <rect x="10" y="30" width="120" height="56" rx="8" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="1"/>
+          <text x="70" y="50" text-anchor="middle" font-size="9" fill="#7a7970" font-family="monospace">LINE</text>
+          <text x="70" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="#085041" class="ja">商品紹介</text>
+          <text x="70" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="#085041" class="zh">商品介紹</text>
+          <text x="70" y="79" text-anchor="middle" font-size="10" fill="#085041" class="ja">メッセージ</text>
+          <text x="70" y="79" text-anchor="middle" font-size="10" fill="#085041" class="zh">訊息推播</text>
+          <text x="70" y="104" text-anchor="middle" font-size="9" fill="#7a7970">①</text>
+
+          <!-- arrow ①→② -->
+          <line x1="132" y1="58" x2="158" y2="58" stroke="#0f9e75" stroke-width="1.5" marker-end="url(#arrowG)"/>
+
+          <!-- ② SHOPLINE LP -->
+          <rect x="160" y="30" width="130" height="56" rx="8" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="1"/>
+          <text x="225" y="50" text-anchor="middle" font-size="9" fill="#7a7970" font-family="monospace">SHOPLINE</text>
+          <text x="225" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="#085041" class="ja">商品紹介LP</text>
+          <text x="225" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="#085041" class="zh">商品介紹 LP</text>
+          <text x="225" y="79" text-anchor="middle" font-size="10" fill="#085041" class="ja">会員ログイン</text>
+          <text x="225" y="79" text-anchor="middle" font-size="10" fill="#085041" class="zh">會員登入</text>
+          <text x="225" y="104" text-anchor="middle" font-size="9" fill="#7a7970">②</text>
+          <!-- ID紐付け需要ラベル -->
+          <rect x="168" y="98" width="114" height="16" rx="3" fill="#faece7" stroke="#f0997b" stroke-width="0.5"/>
+          <text x="225" y="110" text-anchor="middle" font-size="9" fill="#d85a30" font-weight="500" class="ja">要：ID紐付け確認</text>
+          <text x="225" y="110" text-anchor="middle" font-size="9" fill="#d85a30" font-weight="500" class="zh">需：確認 ID 綁定</text>
+
+          <!-- arrow ②→③ -->
+          <line x1="292" y1="58" x2="318" y2="58" stroke="#d85a30" stroke-width="1.5" marker-end="url(#arrowO)"/>
+
+          <!-- ③ SHOPLINE クリック検知 -->
+          <rect x="320" y="30" width="130" height="56" rx="8" fill="#faece7" stroke="#f0997b" stroke-width="1"/>
+          <text x="385" y="50" text-anchor="middle" font-size="9" fill="#7a7970" font-family="monospace">SHOPLINE</text>
+          <text x="385" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="#4a1b0c" class="ja">クリック検知</text>
+          <text x="385" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="#4a1b0c" class="zh">點擊事件偵測</text>
+          <text x="385" y="79" text-anchor="middle" font-size="10" fill="#4a1b0c" class="ja">JS / GTM</text>
+          <text x="385" y="79" text-anchor="middle" font-size="10" fill="#4a1b0c" class="zh">JS / GTM</text>
+          <text x="385" y="104" text-anchor="middle" font-size="9" fill="#7a7970">③④</text>
+          <rect x="328" y="98" width="114" height="16" rx="3" fill="#faece7" stroke="#f0997b" stroke-width="0.5"/>
+          <text x="385" y="110" text-anchor="middle" font-size="9" fill="#d85a30" font-weight="500" class="ja">要：追加実装</text>
+          <text x="385" y="110" text-anchor="middle" font-size="9" fill="#d85a30" font-weight="500" class="zh">需：額外實作</text>
+
+          <!-- arrow ③→GA4 (斜め上) -->
+          <path d="M452 48 Q490 30 510 48" stroke="#185fa5" stroke-width="1.5" fill="none" stroke-dasharray="4 2" marker-end="url(#arrowB)"/>
+          <text x="478" y="34" text-anchor="middle" font-size="8" fill="#185fa5" class="ja">集計のみ</text>
+          <text x="478" y="34" text-anchor="middle" font-size="8" fill="#185fa5" class="zh">僅集計</text>
+
+          <!-- GA4 box (上段) -->
+          <rect x="510" y="10" width="110" height="44" rx="8" fill="#e6f1fb" stroke="#85b7eb" stroke-width="1"/>
+          <text x="565" y="28" text-anchor="middle" font-size="9" fill="#7a7970" font-family="monospace">GA4</text>
+          <text x="565" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#042c53" class="ja">集計レポート</text>
+          <text x="565" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#042c53" class="zh">集計報表</text>
+          <!-- GA4 注釈 -->
+          <rect x="510" y="60" width="110" height="26" rx="4" fill="#faeeda" stroke="#e6c87a" stroke-width="0.5"/>
+          <text x="565" y="72" text-anchor="middle" font-size="8" fill="#633806" class="ja">⚠️ 個人特定不可</text>
+          <text x="565" y="72" text-anchor="middle" font-size="8" fill="#633806" class="zh">⚠️ 無法識別個人</text>
+          <text x="565" y="82" text-anchor="middle" font-size="8" fill="#633806" class="ja">今回の本質ではない</text>
+          <text x="565" y="82" text-anchor="middle" font-size="8" fill="#633806" class="zh">非本次重點</text>
+
+          <!-- arrow ③→Super8 API (下矢印) -->
+          <path d="M452 68 Q490 90 510 120" stroke="#d85a30" stroke-width="1.5" fill="none" marker-end="url(#arrowO)"/>
+          <text x="472" y="104" text-anchor="middle" font-size="8" fill="#d85a30" class="ja">API送信</text>
+          <text x="472" y="104" text-anchor="middle" font-size="8" fill="#d85a30" class="zh">API 傳送</text>
+
+          <!-- ⑤ Super8 CRM -->
+          <rect x="510" y="120" width="130" height="56" rx="8" fill="#eeedfe" stroke="#afa9ec" stroke-width="1"/>
+          <text x="575" y="140" text-anchor="middle" font-size="9" fill="#7a7970" font-family="monospace">Super8 CRM</text>
+          <text x="575" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#26215c" class="ja">行動タグ蓄積</text>
+          <text x="575" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#26215c" class="zh">行為標籤累積</text>
+          <text x="575" y="169" text-anchor="middle" font-size="10" fill="#26215c" class="ja">LINE IDに紐付け</text>
+          <text x="575" y="169" text-anchor="middle" font-size="10" fill="#26215c" class="zh">與 LINE ID 綁定</text>
+          <rect x="518" y="183" width="114" height="16" rx="3" fill="#faece7" stroke="#f0997b" stroke-width="0.5"/>
+          <text x="575" y="195" text-anchor="middle" font-size="9" fill="#d85a30" font-weight="500" class="ja">要：API実装</text>
+          <text x="575" y="195" text-anchor="middle" font-size="9" fill="#d85a30" font-weight="500" class="zh">需：API 實作</text>
+
+          <!-- arrow Super8→活用 -->
+          <line x1="642" y1="148" x2="668" y2="148" stroke="#534ab7" stroke-width="1.5" marker-end="url(#arrowP)"/>
+
+          <!-- 活用 フォローアップ -->
+          <rect x="670" y="120" width="130" height="56" rx="8" fill="#eeedfe" stroke="#afa9ec" stroke-width="1"/>
+          <text x="735" y="140" text-anchor="middle" font-size="9" fill="#7a7970" font-family="monospace">LINE</text>
+          <text x="735" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#26215c" class="ja">フォローアップ</text>
+          <text x="735" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#26215c" class="zh">追蹤推播</text>
+          <text x="735" y="169" text-anchor="middle" font-size="10" fill="#26215c" class="ja">セグメント配信</text>
+          <text x="735" y="169" text-anchor="middle" font-size="10" fill="#26215c" class="zh">分眾發送</text>
+
+          <!-- 縦点線：ステップ区切り -->
+          <line x1="70" y1="120" x2="70" y2="200" stroke="#ebebeb" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="225" y1="120" x2="225" y2="200" stroke="#ebebeb" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="385" y1="120" x2="385" y2="200" stroke="#ebebeb" stroke-width="1" stroke-dasharray="3 3"/>
+
+          <!-- 凡例 -->
+          <rect x="10" y="220" width="840" height="36" rx="6" fill="#f7f6f3"/>
+          <circle cx="26" cy="238" r="4" fill="#0f9e75"/>
+          <text x="34" y="242" font-size="9" fill="#7a7970" class="ja">SHOPLINEの動き</text>
+          <text x="34" y="242" font-size="9" fill="#7a7970" class="zh">SHOPLINE 動作</text>
+          <circle cx="140" cy="238" r="4" fill="#185fa5"/>
+          <text x="148" y="242" font-size="9" fill="#7a7970" class="ja">GA4（集計・参考）</text>
+          <text x="148" y="242" font-size="9" fill="#7a7970" class="zh">GA4（集計・參考）</text>
+          <circle cx="268" cy="238" r="4" fill="#534ab7"/>
+          <text x="276" y="242" font-size="9" fill="#7a7970" class="ja">Super8 CRM（本質）</text>
+          <text x="276" y="242" font-size="9" fill="#7a7970" class="zh">Super8 CRM（核心）</text>
+          <circle cx="400" cy="238" r="4" fill="#d85a30"/>
+          <text x="408" y="242" font-size="9" fill="#7a7970" class="ja">要実装（API連携）</text>
+          <text x="408" y="242" font-size="9" fill="#7a7970" class="zh">需實作（API 串接）</text>
+          <line x1="510" y1="238" x2="526" y2="238" stroke="#185fa5" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <text x="530" y="242" font-size="9" fill="#7a7970" class="ja">参考情報のみ</text>
+          <text x="530" y="242" font-size="9" fill="#7a7970" class="zh">僅供參考</text>
+        </svg>
+      </div>
+
+      <!-- GTM/GA4 note -->
+      <div style="margin-top:12px;padding:12px 16px;background:var(--gray-50);border-radius:8px;border:1px solid var(--gray-100);font-size:11px;color:var(--gray-700);line-height:1.8;">
+        <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--gray-500);margin-bottom:10px;font-weight:500;">GTM / GA4 <span class="ja">の位置づけ</span><span class="zh">的定位</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="padding:10px 12px;background:#e6f1fb;border-radius:6px;border-left:3px solid #378add;">
+            <div style="font-weight:700;color:#0c447c;margin-bottom:4px;"><span class="ja">GA4でできること</span><span class="zh">GA4 可以做到的事</span></div>
+            <span class="ja">LINE経由の流入数・商品クリック数などを<strong>集計ベース</strong>で分析できる。全体の数値把握・改善分析には有効。</span>
+            <span class="zh">可以<strong>集計方式</strong>分析 LINE 流入數、商品點擊數等。適合用於整體數字掌握與改善分析。</span>
+          </div>
+          <div style="padding:10px 12px;background:#faece7;border-radius:6px;border-left:3px solid #d85a30;">
+            <div style="font-weight:700;color:#993c1d;margin-bottom:4px;">⚠️ <span class="ja">今回のゴールとの関係</span><span class="zh">與本次目標的關係</span></div>
+            <span class="ja">GA4は<strong>個人を特定できない</strong>ため、「このLINE IDの人に商品Aのフォローアップを送る」という今回の目的には直接関係しない。<strong>今回の本質はSuper8 API連携のみ。</strong></span>
+            <span class="zh">GA4 <strong>無法識別個人</strong>，因此與「對特定 LINE ID 發送商品 A 追蹤訊息」的目的無直接關聯。<strong>本次的核心僅為 Super8 API 串接。</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#5dcaa5;"></div><span class="ja">SHOPLINEサイト上の動き</span><span class="zh">SHOPLINE 網站上的動作</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#378add;"></div>GTM / GA4<span class="ja">（集計分析）</span><span class="zh">（集計分析）</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7f77dd;"></div>Super8 CRM<span class="ja">への保存・活用</span><span class="zh">儲存與應用</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#d85a30;"></div><span class="ja">追加実装が必要な箇所</span><span class="zh">需要額外實作的項目</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section id="prereq">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2><span class="ja">前提として必要なこと</span><span class="zh">前提條件</span></h2>
+    </div>
+    <div class="two-col">
+      <div class="prereq-card">
+        <div class="pc-head"><div class="pc-icon green">✅</div>
+          <div><h3><span class="ja">既に整っている前提</span><span class="zh">已具備的前提</span></h3>
+          <span class="pc-status status-ok"><span class="ja">確認済み</span><span class="zh">已確認</span></span></div>
+        </div>
+        <ul>
+          <li><span class="li-dot dot-green"></span><span class="ja">store.benesse.com.tw はSHOPLINEで構築済み</span><span class="zh">store.benesse.com.tw 以 SHOPLINE 建置完成</span></li>
+          <li><span class="li-dot dot-green"></span><span class="ja">LINEタグがサイトに導入済み</span><span class="zh">網站已導入 LINE Tag</span></li>
+          <li><span class="li-dot dot-green"></span><span class="ja">Super8とSHOPLINEは公式連携パートナー</span><span class="zh">Super8 與 SHOPLINE 為官方串接夥伴</span></li>
+          <li><span class="li-dot dot-green"></span><span class="ja">Super8はOpen API / Webhookをサポート</span><span class="zh">Super8 支援 Open API / Webhook</span></li>
+          <li><span class="li-dot dot-green"></span><span class="ja">Super8の顧客タグ管理機能が利用可能</span><span class="zh">Super8 顧客標籤管理功能可使用</span></li>
+        </ul>
+      </div>
+      <div class="prereq-card">
+        <div class="pc-head"><div class="pc-icon amber">⚠️</div>
+          <div><h3><span class="ja">事前に確認・整備が必要な前提</span><span class="zh">需事前確認・整備的前提</span></h3>
+          <span class="pc-status status-check"><span class="ja">要確認</span><span class="zh">待確認</span></span></div>
+        </div>
+        <ul>
+          <li><span class="li-dot dot-amber"></span><span class="ja">Super8がタグ付与用のAPIを公開しているか</span><span class="zh">Super8 是否開放標籤賦予用 API</span></li>
+          <li><span class="li-dot dot-amber"></span><span class="ja">SHOPLINEのログイン情報にLINE IDが紐付けられる仕組みがあるか</span><span class="zh">SHOPLINE 登入資訊是否可與 LINE ID 綁定</span></li>
+          <li><span class="li-dot dot-amber"></span><span class="ja">SHOPLINEサイトにGTMが導入されているか</span><span class="zh">SHOPLINE 網站是否已導入 GTM</span></li>
+          <li><span class="li-dot dot-amber"></span><span class="ja">Super8のAPIキー取得方法・権限設定</span><span class="zh">Super8 API 金鑰取得方式與權限設定</span></li>
+        </ul>
+      </div>
+      <div class="prereq-card">
+        <div class="pc-head"><div class="pc-icon coral">🔧</div>
+          <div><h3><span class="ja">技術的な前提条件</span><span class="zh">技術前提條件</span></h3>
+          <span class="pc-status status-impl"><span class="ja">実装前提</span><span class="zh">實作前提</span></span></div>
+        </div>
+        <ul>
+          <li><span class="li-dot dot-coral"></span><span class="ja">顧客がSHOPLINEサイトにログインした状態でLPを閲覧すること</span><span class="zh">顧客在登入 SHOPLINE 的狀態下瀏覽 LP</span></li>
+          <li><span class="li-dot dot-coral"></span><span class="ja">ログインセッションからLINE IDを取得できること</span><span class="zh">可從登入 Session 取得 LINE ID</span></li>
+          <li><span class="li-dot dot-coral"></span><span class="ja">商品クリックイベントをJS/GTMで検知できること</span><span class="zh">可透過 JS 或 GTM 偵測商品點擊事件</span></li>
+          <li><span class="li-dot dot-coral"></span><span class="ja">APIキーをサーバー側で管理し、フロントに露出させない設計</span><span class="zh">API 金鑰由伺服器端管理，不暴露於前端</span></li>
+        </ul>
+      </div>
+      <div class="prereq-card">
+        <div class="pc-head"><div class="pc-icon purple">📋</div>
+          <div><h3><span class="ja">ビジネス・運用面の前提</span><span class="zh">業務・運營面的前提</span></h3>
+          <span class="pc-status status-check"><span class="ja">要確認</span><span class="zh">待確認</span></span></div>
+        </div>
+        <ul>
+          <li><span class="li-dot dot-amber"></span><span class="ja">取得するタグの命名規則を定義（例：product_click_XXX）</span><span class="zh">定義標籤命名規則（例：product_click_XXX）</span></li>
+          <li><span class="li-dot dot-amber"></span><span class="ja">収集データのプライバシーポリシーへの反映</span><span class="zh">將蒐集資料納入隱私政策</span></li>
+          <li><span class="li-dot dot-amber"></span><span class="ja">フォローアップ配信の設計（誰にいつ何を送るか）</span><span class="zh">設計追蹤推播（對誰、何時、發送什麼）</span></li>
+          <li><span class="li-dot dot-amber"></span><span class="ja">実装後の効果測定指標（KPI）の定義</span><span class="zh">定義實作後的成效指標（KPI）</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section id="changes">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2><span class="ja">必要な変更・実装内容</span><span class="zh">所需變更與實作內容</span></h2>
+    </div>
+    <table class="change-table">
+      <thead>
+        <tr>
+          <th><span class="ja">変更箇所</span><span class="zh">變更項目</span></th>
+          <th><span class="ja">内容</span><span class="zh">內容</span></th>
+          <th><span class="ja">担当</span><span class="zh">負責人</span></th>
+          <th><span class="ja">ステータス</span><span class="zh">狀態</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="ja">SHOPLINEサイト<br>（LP設計）</span><span class="zh">SHOPLINE 網站<br>（LP 設計）</span></td>
+          <td><span class="ja">売りたい商品だけを集めた商品紹介LPを新規作成。各商品に「詳細を見る」ボタンを設置し、商品IDをデータ属性として付与する。</span><span class="zh">新建僅集結目標商品的商品介紹 LP。為各商品設置「查看詳情」按鈕，並以 data 屬性賦予商品 ID。</span></td>
+          <td><span class="ja">Webサイト担当</span><span class="zh">網站負責人</span></td>
+          <td><span class="badge badge-req"><span class="ja">実装必要</span><span class="zh">需要實作</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="ja">LINE ID紐付け<br>（会員認証）</span><span class="zh">LINE ID 綁定<br>（會員驗證）</span></td>
+          <td><span class="ja">SHOPLINEの会員ログイン時にLINE IDをセッションに保持する仕組みを設ける。Super8の会員連携機能またはカスタム実装で対応。</span><span class="zh">在 SHOPLINE 會員登入時，建立將 LINE ID 保留於 Session 的機制。透過 Super8 會員連携功能或自訂實作處理。</span></td>
+          <td><span class="ja">Webサイト担当＋Super8確認</span><span class="zh">網站負責人＋Super8 確認</span></td>
+          <td><span class="badge badge-chk"><span class="ja">要確認後実装</span><span class="zh">確認後實作</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="ja">クリックイベント検知<br>（JS / GTM）</span><span class="zh">點擊事件偵測<br>（JS / GTM）</span></td>
+          <td><span class="ja">「詳細を見る」ボタンのクリック時に、LINE IDと商品IDをパラメータとしてSuper8 APIへ送信するコードを追加。GTMが使えれば管理画面のみで対応可能な場合あり。</span><span class="zh">點擊「查看詳情」按鈕時，新增將 LINE ID 與商品 ID 作為參數傳送至 Super8 API 的程式碼。若可使用 GTM，部分可僅透過管理介面設定完成。</span></td>
+          <td><span class="ja">Webサイト担当</span><span class="zh">網站負責人</span></td>
+          <td><span class="badge badge-req"><span class="ja">実装必要</span><span class="zh">需要實作</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="ja">Super8 API連携</span><span class="zh">Super8 API 串接</span></td>
+          <td><span class="ja">Super8のタグ付与APIを呼び出し、「LINE ID ＋ 商品タグ」を記録する。APIドキュメントの取得と認証設定が必要。</span><span class="zh">呼叫 Super8 標籤賦予 API，記錄「LINE ID ＋ 商品標籤」。需取得 API 文件並設定驗證。</span></td>
+          <td><span class="ja">Webサイト担当＋Super8</span><span class="zh">網站負責人＋Super8</span></td>
+          <td><span class="badge badge-chk"><span class="ja">API確認後実装</span><span class="zh">API 確認後實作</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="ja">Super8 CRM<br>（タグ設計）</span><span class="zh">Super8 CRM<br>（標籤設計）</span></td>
+          <td><span class="ja">管理画面上でタグの命名規則を定義し、タグに基づくセグメント配信のシナリオを設定する。</span><span class="zh">在管理介面定義標籤命名規則，並設定以標籤為基礎的分眾推播情境。</span></td>
+          <td><span class="ja">マーケティング担当</span><span class="zh">行銷負責人</span></td>
+          <td><span class="badge badge-req"><span class="ja">設計必要</span><span class="zh">需要設計</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="ja">フォローアップ配信<br>（自動化シナリオ）</span><span class="zh">追蹤推播<br>（自動化情境）</span></td>
+          <td><span class="ja">特定商品タグが付いた顧客に対して、一定時間後に自動でフォローアップメッセージを送信する顧客ジャーニーをSuper8上で設定する。</span><span class="zh">在 Super8 上設定對持有特定商品標籤的顧客，於一定時間後自動發送追蹤訊息的顧客旅程。</span></td>
+          <td><span class="ja">マーケティング担当</span><span class="zh">行銷負責人</span></td>
+          <td><span class="badge badge-ok"><span class="ja">既存機能で対応可</span><span class="zh">現有功能可支援</span></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 05 -->
+  <section id="questions">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2><span class="ja">Super8サポートへの確認事項</span><span class="zh">向 Super8 客服確認的事項</span></h2>
+    </div>
+    <div class="q-list">
+      <div class="q-item">
+        <div class="q-num">Q1</div>
+        <div class="q-content">
+          <h4><span class="ja">タグ付与用 Open API の存在確認</span><span class="zh">確認標籤賦予用 Open API 是否存在</span></h4>
+          <p><span class="ja">外部サイトからLINE IDを指定してタグを付与・更新できるAPIエンドポイントが提供されているか。エンドポイントURL・HTTPメソッド・必要パラメータ・認証方式を確認する。</span><span class="zh">是否提供可從外部網站指定 LINE ID 進行標籤賦予/更新的 API 端點。確認端點 URL、HTTP 方法、必要參數及驗證方式。</span></p>
+          <div class="q-text"><span class="ja">「顧客のLINE IDに対してタグを付与するOpen APIのエンドポイントとパラメータ仕様を教えてください。SHOPLINEサイト上の商品クリックをトリガーにタグを自動付与したいです。」</span><span class="zh">「請告知對顧客 LINE ID 賦予標籤的 Open API 端點與參數規格。我們希望以 SHOPLINE 網站上的商品點擊為觸發條件，自動賦予標籤。」</span></div>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">Q2</div>
+        <div class="q-content">
+          <h4><span class="ja">SHOPLINE会員ID ↔ LINE IDの紐付け方法</span><span class="zh">SHOPLINE 會員 ID ↔ LINE ID 的綁定方式</span></h4>
+          <p><span class="ja">SHOPLINEにログインした状態のユーザーのLINE IDを取得し、Super8のCRM上の顧客レコードと紐付けるための推奨手順を確認する。</span><span class="zh">確認取得已登入 SHOPLINE 之用戶的 LINE ID，並與 Super8 CRM 上的顧客記錄綁定的推薦步驟。</span></p>
+          <div class="q-text"><span class="ja">「SHOPLINE会員のIDとLINE IDを紐付けた上で、行動タグをLINE ID単位でSuper8に記録することは可能ですか？推奨の実装方法を教えてください。」</span><span class="zh">「將 SHOPLINE 會員 ID 與 LINE ID 綁定後，是否可以 LINE ID 為單位在 Super8 記錄行為標籤？請告知推薦的實作方式。」</span></div>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">Q3</div>
+        <div class="q-content">
+          <h4><span class="ja">SHOPLINE連携で取得できるデータの範囲確認</span><span class="zh">確認 SHOPLINE 串接可取得的資料範圍</span></h4>
+          <p><span class="ja">現在のSHOPLINE公式連携で、購入完了以外（商品閲覧・クリック等の行動データ）も取得できるかを確認する。</span><span class="zh">確認目前 SHOPLINE 官方串接是否能取得購買完成以外的資料（商品瀏覽、點擊等行為資料）。</span></p>
+          <div class="q-text"><span class="ja">「SHOPLINE連携で取得できるデータ範囲を教えてください。購入データ以外に、商品クリックや詳細ページ閲覧などの行動データも取得できますか？」</span><span class="zh">「請告知透過 SHOPLINE 串接可取得的資料範圍。除購買資料外，是否也能取得商品點擊或詳細頁瀏覽等行為資料？」</span></div>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">Q4</div>
+        <div class="q-content">
+          <h4><span class="ja">APIキーの取得方法・権限設定</span><span class="zh">API 金鑰取得方式與權限設定</span></h4>
+          <p><span class="ja">Super8の管理画面上でAPIキーを発行する手順、および外部からのAPI呼び出しに必要な権限の設定方法を確認する。</span><span class="zh">確認在 Super8 管理介面發行 API 金鑰的步驟，以及從外部呼叫 API 所需的權限設定方式。</span></p>
+          <div class="q-text"><span class="ja">「外部サイトからAPIを呼び出すためのAPIキーの発行手順と、設定が必要な権限の範囲を教えてください。」</span><span class="zh">「請告知從外部網站呼叫 API 所需的 API 金鑰發行步驟，以及需要設定的權限範圍。」</span></div>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">Q5</div>
+        <div class="q-content">
+          <h4><span class="ja">GTMとの連携サポート有無</span><span class="zh">是否支援與 GTM 的串接</span></h4>
+          <p><span class="ja">SHOPLINEサイトにGTMを導入してSuper8 APIへのタグ送信を行う構成がサポートされているか、またはドキュメント・サンプルコードが提供されているかを確認する。</span><span class="zh">確認透過在 SHOPLINE 網站導入 GTM 並傳送標籤至 Super8 API 的架構是否受到支援，或是否提供相關文件與範例程式碼。</span></p>
+          <div class="q-text"><span class="ja">「GTM（Googleタグマネージャー）を使ってSuper8 APIにデータを送る設定のサポート資料やサンプルはありますか？」</span><span class="zh">「是否有使用 GTM（Google Tag Manager）傳送資料至 Super8 API 的設定支援文件或範例？」</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑥ パターン対応 -->
+  <section id="patterns">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2><span class="ja">Super8の回答パターン別 — サイト側の対応</span><span class="zh">依 Super8 回應模式 — 網站端對應方式</span></h2>
+    </div>
+    <p style="font-size:12px;color:var(--gray-500);margin-bottom:20px;">
+      <span class="ja">Super8への確認（Q1〜Q5）の回答内容によって、サイト側の実装アプローチが異なります。3パターンに備えておきましょう。</span>
+      <span class="zh">依據向 Super8 確認（Q1～Q5）的回覆內容，網站端的實作方式會有所不同。請預先準備以下 3 種模式的對應方案。</span>
+    </p>
+    <div class="pattern-grid">
+
+      <!-- Pattern A -->
+      <div class="pattern-card a">
+        <div class="pattern-head">
+          <span class="pattern-badge a"><span class="ja">パターン A</span><span class="zh">模式 A</span></span>
+          <div class="pattern-title"><span class="ja">✅ Super8がタグ付与APIを公開している場合</span><span class="zh">✅ Super8 已開放標籤賦予 API</span></div>
+        </div>
+        <div class="pattern-body">
+          <div class="pattern-col">
+            <h5><span class="ja">サイト側の対応</span><span class="zh">網站端對應</span></h5>
+            <ul>
+              <li><span class="li-dot dot-green"></span><span class="ja">商品紹介LPに「詳細を見る」ボタンを設置し、<code>data-product-id</code>属性で商品IDを付与</span><span class="zh">在 LP 設置「查看詳情」按鈕，以 <code>data-product-id</code> 屬性賦予商品 ID</span></li>
+              <li><span class="li-dot dot-green"></span><span class="ja">ボタンクリック時にJS（またはGTMカスタムタグ）でSuper8 APIを呼び出す</span><span class="zh">點擊按鈕時，透過 JS（或 GTM 自訂標籤）呼叫 Super8 API</span></li>
+              <li><span class="li-dot dot-green"></span><span class="ja">APIにLINE IDと商品タグ（例：<code>product_click_ABC</code>）を送信</span><span class="zh">將 LINE ID 與商品標籤（例：<code>product_click_ABC</code>）傳送至 API</span></li>
+              <li><span class="li-dot dot-green"></span><span class="ja">APIキーはサーバー側で管理（フロントに露出しない）</span><span class="zh">API 金鑰由伺服器端管理（不暴露於前端）</span></li>
+            </ul>
+          </div>
+          <div class="pattern-col">
+            <h5><span class="ja">難易度・工数目安</span><span class="zh">難度・工時參考</span></h5>
+            <ul>
+              <li><span class="li-dot dot-green"></span><span class="ja">GTM導入済みであればノーコードに近い形で対応可能</span><span class="zh">若已導入 GTM，可近似無程式碼方式完成</span></li>
+              <li><span class="li-dot dot-green"></span><span class="ja">APIキー管理のためサーバー側の軽微な修正が必要</span><span class="zh">API 金鑰管理需對伺服器端進行輕微修改</span></li>
+              <li><span class="li-dot dot-green"></span><span class="ja">工数目安：開発 1〜3日 ＋ テスト 1日</span><span class="zh">工時參考：開發 1～3 天 ＋ 測試 1 天</span></li>
+            </ul>
+            <div style="margin-top:10px;padding:8px 10px;background:#e1f5ee;border-radius:6px;font-size:11px;color:#085041;font-weight:500;">
+              <span class="ja">→ 最もシンプルで推奨のパターン</span><span class="zh">→ 最簡單、建議優先採用的模式</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pattern B -->
+      <div class="pattern-card b">
+        <div class="pattern-head">
+          <span class="pattern-badge b"><span class="ja">パターン B</span><span class="zh">模式 B</span></span>
+          <div class="pattern-title"><span class="ja">⚠️ APIはあるが、公式連携の行動データ取得が限定的な場合</span><span class="zh">⚠️ 有 API，但官方串接取得行為資料受限</span></div>
+        </div>
+        <div class="pattern-body">
+          <div class="pattern-col">
+            <h5><span class="ja">サイト側の対応</span><span class="zh">網站端對應</span></h5>
+            <ul>
+              <li><span class="li-dot dot-amber"></span><span class="ja">SHOPLINEのカスタムスクリプト機能（Script Editor）にJSを追加</span><span class="zh">在 SHOPLINE Script Editor 中新增 JS</span></li>
+              <li><span class="li-dot dot-amber"></span><span class="ja">商品詳細ページURLのパターン（<code>/products/</code>）をトリガーとして検知</span><span class="zh">以商品詳細頁 URL（<code>/products/</code>）作為觸發條件</span></li>
+              <li><span class="li-dot dot-amber"></span><span class="ja">Webhookを中継サーバーとして使い、Super8 APIへのPOSTをバックエンドで処理</span><span class="zh">以 Webhook 作為中繼，在後端執行對 Super8 API 的 POST 處理</span></li>
+              <li><span class="li-dot dot-amber"></span><span class="ja">GTM + カスタムHTMLタグでWebhookへ通知する構成も可</span><span class="zh">也可用 GTM ＋ 自訂 HTML 標籤發送通知至 Webhook</span></li>
+            </ul>
+          </div>
+          <div class="pattern-col">
+            <h5><span class="ja">難易度・工数目安</span><span class="zh">難度・工時參考</span></h5>
+            <ul>
+              <li><span class="li-dot dot-amber"></span><span class="ja">中継サーバー（Webhookエンドポイント）の構築が必要</span><span class="zh">需建置中繼伺服器（Webhook 端點）</span></li>
+              <li><span class="li-dot dot-amber"></span><span class="ja">Vercel / Cloud Functionsなどサーバーレスで比較的手軽に実装可</span><span class="zh">可透過 Vercel / Cloud Functions 等無伺服器服務相對輕鬆實作</span></li>
+              <li><span class="li-dot dot-amber"></span><span class="ja">工数目安：開発 3〜5日 ＋ テスト 2日</span><span class="zh">工時參考：開發 3～5 天 ＋ 測試 2 天</span></li>
+            </ul>
+            <div style="margin-top:10px;padding:8px 10px;background:#faeeda;border-radius:6px;font-size:11px;color:#633806;font-weight:500;">
+              <span class="ja">→ 中間的な構成。開発リソースが必要</span><span class="zh">→ 中階架構，需要開發資源</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pattern C -->
+      <div class="pattern-card c">
+        <div class="pattern-head">
+          <span class="pattern-badge c"><span class="ja">パターン C</span><span class="zh">模式 C</span></span>
+          <div class="pattern-title"><span class="ja">❌ Super8がタグ付与用APIを提供していない場合</span><span class="zh">❌ Super8 未提供標籤賦予用 API</span></div>
+        </div>
+        <div class="pattern-body">
+          <div class="pattern-col">
+            <h5><span class="ja">代替手段の検討</span><span class="zh">替代方案評估</span></h5>
+            <ul>
+              <li><span class="li-dot dot-coral"></span><span class="ja">Super8のWebhook受信機能で外部からイベントを受け取る形式が可能か確認</span><span class="zh">確認是否可利用 Super8 Webhook 接收功能從外部接收事件</span></li>
+              <li><span class="li-dot dot-coral"></span><span class="ja">SHOPLINE公式連携の「カート追加」「購入完了」などの既存イベントを活用する形に設計変更</span><span class="zh">調整設計，改為活用 SHOPLINE 官方串接的「加入購物車」「購買完成」等現有事件</span></li>
+              <li><span class="li-dot dot-coral"></span><span class="ja">Super8のLINE Login連携を活用し、LINEミニアプリ経由での行動取得を検討</span><span class="zh">利用 Super8 的 LINE Login 串接，評估透過 LINE 小程式取得行為資料</span></li>
+              <li><span class="li-dot dot-coral"></span><span class="ja">上記が難しい場合、他のCRMツールへの移行も視野に入れる</span><span class="zh">若上述皆不可行，考慮評估遷移至其他 CRM 工具</span></li>
+            </ul>
+          </div>
+          <div class="pattern-col">
+            <h5><span class="ja">Super8への追加確認事項</span><span class="zh">向 Super8 的追加確認</span></h5>
+            <ul>
+              <li><span class="li-dot dot-coral"></span><span class="ja">Webhookで外部からタグ付与するエンドポイントはあるか</span><span class="zh">是否有可從外部透過 Webhook 賦予標籤的端點</span></li>
+              <li><span class="li-dot dot-coral"></span><span class="ja">将来的なAPI公開のロードマップがあるか</span><span class="zh">是否有未來開放 API 的路線圖</span></li>
+              <li><span class="li-dot dot-coral"></span><span class="ja">カスタム開発サポート（有償）の提供があるか</span><span class="zh">是否提供自訂開發支援（付費）</span></li>
+            </ul>
+            <div style="margin-top:10px;padding:8px 10px;background:#faece7;border-radius:6px;font-size:11px;color:#4a1b0c;font-weight:500;">
+              <span class="ja">→ このパターンになった場合は戦略の見直しが必要</span><span class="zh">→ 若屬此模式，需重新檢討策略</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ⑦ 次のステップ -->
+  <section id="nextsteps">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2><span class="ja">推奨する進め方</span><span class="zh">建議推進方式</span></h2>
+    </div>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">1</div><div class="step-line"></div></div>
+        <div class="step-right">
+          <span class="step-tag"><span class="ja">今すぐできる</span><span class="zh">立即可行</span></span>
+          <h4><span class="ja">Super8サポートにQ1〜Q5を確認</span><span class="zh">向 Super8 客服確認 Q1～Q5</span></h4>
+          <p><span class="ja">上記の質問リストをメール・チャットでSuper8サポートに送付。特にQ1（API有無）の回答がすべての実装方針を左右するため最優先。</span><span class="zh">將上述問題清單以 Email 或聊天方式傳送至 Super8 客服。尤其 Q1（API 是否存在）的回覆將左右所有實作方向，應優先確認。</span></p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">2</div><div class="step-line"></div></div>
+        <div class="step-right">
+          <span class="step-tag"><span class="ja">API確認後</span><span class="zh">API 確認後</span></span>
+          <h4><span class="ja">タグの命名規則・シナリオ設計</span><span class="zh">標籤命名規則與情境設計</span></h4>
+          <p><span class="ja">APIが使えることが確認できたら、タグ名の命名規則（例：product_click_{商品ID}）と、フォローアップシナリオを先に設計する。</span><span class="zh">確認 API 可用後，先設計標籤命名規則（例：product_click_{商品ID}）與追蹤訊息情境。</span></p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">3</div><div class="step-line"></div></div>
+        <div class="step-right">
+          <span class="step-tag"><span class="ja">開発フェーズ</span><span class="zh">開發階段</span></span>
+          <h4><span class="ja">SHOPLINEサイトの実装</span><span class="zh">SHOPLINE 網站實作</span></h4>
+          <p><span class="ja">商品紹介LPの作成 → LINE ID紐付け処理 → クリックイベント検知 → Super8 API呼び出しの順で実装。GTMが使えれば一部はノーコードで対応可能。</span><span class="zh">依序實作：建立商品介紹 LP → LINE ID 綁定處理 → 點擊事件偵測 → 呼叫 Super8 API。若可使用 GTM，部分項目可無需撰寫程式碼完成。</span></p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">4</div><div class="step-line"></div></div>
+        <div class="step-right">
+          <span class="step-tag"><span class="ja">テスト</span><span class="zh">測試</span></span>
+          <h4><span class="ja">テスト環境での動作確認</span><span class="zh">測試環境動作確認</span></h4>
+          <p><span class="ja">実際にLINEからアクセスし、商品クリック → Super8 CRMにタグが付いているかを確認。テストアカウントを用意して本番前に必ず検証する。</span><span class="zh">實際從 LINE 存取，確認商品點擊後 Super8 CRM 是否已賦予標籤。請準備測試帳號，務必在上線前完成驗證。</span></p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">5</div></div>
+        <div class="step-right">
+          <span class="step-tag"><span class="ja">本番・運用</span><span class="zh">正式上線・運營</span></span>
+          <h4><span class="ja">Super8上でフォローアップ配信シナリオを稼働</span><span class="zh">在 Super8 上啟動追蹤推播情境</span></h4>
+          <p><span class="ja">タグ蓄積を確認後、セグメント配信を本番設定。効果測定（クリック率・転換率）の指標も事前に定義しておく。</span><span class="zh">確認標籤累積後，設定正式的分眾推播。請事先定義成效指標（點擊率、轉換率）。</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="footer">
+  Super8 × LINE <span class="ja">連携プロジェクト 認識合わせ資料</span><span class="zh">串接專案 共識確認文件</span> — Benesse Taiwan
+</div>
+
+<script>
+  function setLang(lang) {
+    document.body.classList.toggle('lang-zh', lang === 'zh');
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  }
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+  });
+  navLinks.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
